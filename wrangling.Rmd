@@ -37,3 +37,63 @@ c(nrow(gapminder), ncol(gapminder))
 
 ```
 
+## Dplyer
+```{r}
+#filter by rows
+filter(gapminder, lifeExp < 29)
+filter(gapminder, country == "Mexico")
+filter(gapminder, country %in% c("Mexico", "Peru", "Italy"))
+filter(gapminder, country == "Mexico", year == 2002)
+```
+
+## Finding the mean of a column 
+```{r}
+sweden <- filter(gapminder, country == "Sweden")
+mean(sweden$lifeExp) # $ lets you look at just one column 
+
+```
+
+## Select by columns
+```{r}
+select(gapminder, year, lifeExp)
+select(gapminder, -continent, -lifeExp)
+
+#select and filter
+gap_cambodia <- filter(gapminder, country == "Cambodia")
+gap_cambodia2 <- select(gap_cambodia, -continent, -lifeExp)
+
+```
+## The pipe operator 
+```{r}
+gapminder %>% head(3)
+# is equivalent to:
+head(gapminder, 3)
+# improve with pipe
+gap_cambodia <- filter(gapminder, country == "Cambodia")
+gap_cambodia2 <- select(gap_cambodia, -continent, -lifeExp)
+
+gap_cambodia <- gapminder %>% 
+  filter(country == "Cambodia") %>%
+  select(-continent, -lifeExp)
+
+```
+
+```{r}
+# mutate adds new variables
+gapminder %>% 
+  mutate(index = 1:nrow(gapminder))
+
+gapminder %>% 
+  mutate(planet = "Earth")
+
+gapminder %>% 
+  mutate(gdp = pop * gdpPercap)
+
+## Challenge: find max gpd per cap of Egypt and Vietnam. Create a new column
+gapminder %>% 
+  filter(country %in% c("Egypt","Vietnam")) %>% 
+  mutate(gdp = pop * gdpPercap) %>% 
+  mutate(maxgdp = max(gdp))
+
+```
+
