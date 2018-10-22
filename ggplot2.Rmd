@@ -4,28 +4,67 @@ author: "Dave"
 date: "October 22, 2018"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Load Package
+```{r packages}
+# install and load tidyverse
+##install.packages("tidyverse") # note on Windows use double quotes
+library(tidyverse)
 ```
 
-## Learning ggplot2 
+## Load NP Data
+```{r load_data}
+#National Parks in California
+ca <-read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/ca.csv") 
 
-This is an R Markdown document that we created to use **ggplot2**. 
+#Acadia National Park
+acadia <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/acadia.csv")
 
-1. **I have no clue how to use ggplot2**
-2. **Hopefully I will learn after lunch**
+#Southeast US National Parks
+se <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/se.csv")
 
-```{r cars}
-summary(cars)
+#2016 Visitation for all Pacific West National Parks
+visit_16 <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/visit_16.csv")
+
+#All Nationally designated sites in Massachusetts
+mass <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/mass.csv")
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+Start with California ("ca")dataset
+```{r}
+head(ca)
+View(ca)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Plot visitation to all CA NAtional Parks over time
+```{r}
+ggplot(data = ca) + 
+  geom_point(aes(x= year, y= visitors))
+```
+
+```{r}
+ggplot(data = ca) + 
+  geom_point(aes(x= year, y= visitors, color = park_name)) +
+  labs(x ="Year", y ="Vistors", title = "Southeast National Park Vistitors")
+```
+
+```{r}
+head(se)
+View(se)
+```
+
+```{r}
+ggplot(data = se) + 
+  geom_point(aes(x= year, y= visitors, color = state)) +
+  labs(x ="Year", y ="Vistors", title = "Southeast National Park Vistors", angle = 45)+
+  theme_minimal()
+```
+
+```{r}
+ggplot(data = se) + 
+  geom_point(aes(x= year, y= visitors, color = state)) +
+  xlab("Years") +
+  ylab("Visitors") +
+  ggtitle("Vistors by State")
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45,size = 15))
+```
