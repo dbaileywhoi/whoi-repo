@@ -64,7 +64,76 @@ ggplot(data = se) +
   geom_point(aes(x= year, y= visitors, color = state)) +
   xlab("Years") +
   ylab("Visitors") +
-  ggtitle("Vistors by State")
+  ggtitle("Visitors by State")+
   theme(legend.title = element_blank(),
-        axis.text.x = element_text(angle = 45,size = 15))
+        axis.text.x = element_text(angle = 45, size = 12))
+      
 ```
+
+```{r}
+ggplot(data=se)+
+  geom_point(aes(x = year, y = visitors, color = park_name))+
+  facet_wrap(~ state, scales = "free")
+```
+#geoms
+```{r}
+ggplot(data = se) +
+  geom_jitter(aes(x = park_name, y = visitors, color = park_name), alpha = 0.4, width = 0.1)
+```
+
+```{r}
+ggplot(se) +
+  geom_line(aes(x = year, y = visitors, color = park_name)) +
+  theme_bw()
+```
+## Multiple geoms on one plot
+```{r}
+ggplot(data = acadia, aes(x = year, y = visitors)) +
+  geom_point() + 
+  geom_line() + 
+  geom_smooth()
+  
+
+```
+
+```{r}
+#install.packages("ggthemes")
+library(ggthemes)
+```
+#Bar Charts
+```{r}
+ggplot(data = visit_16, aes(x = state, y = visitors, fill = park_name)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  theme_minimal()
+
+```
+#Save ggplot 
+```{r}
+myplot <- ggplot(data = visit_16, aes(x = state, y = visitors, fill = park_name)) + 
+  geom_bar(stat = "identity", position = "dodge")
+
+myplot
+
+ggsave(filename = "myplot.jpg", myplot)
+```
+
+# plotly
+```{r}
+#install.packages("plotly")
+library(plotly)
+
+```
+
+```{r}
+acad_vis <- ggplot(data = acadia, aes(x = year, y = visitors)) + 
+  geom_point() +
+  geom_line() +
+  geom_smooth(color = "red") +
+  labs(title = "Acadia National Park Visitation",
+       y = "Visitation",
+       x = "Year") +
+  theme_bw()
+ggplotly(acad_vis)
+
+```
+
